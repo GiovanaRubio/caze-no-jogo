@@ -45,7 +45,6 @@ function formatarDataBR(iso: string) {
 }
 
 function toDateTime(data: string, hora: string) {
-  // data: "2026-01-12"  hora: "14:30"
   return new Date(`${data}T${hora}:00-03:00`);
 }
 
@@ -61,10 +60,11 @@ function agoraBrasil() {
 function isAoVivo(j: Jogo) {
   const inicio = toDateTime(j.data, j.hora);
   const fim = addMinutes(inicio, DURACAO_PADRAO_MIN);
-  const agora = agoraBrasil();
+  const agora = new Date(); // ✅ aqui
 
   return agora >= inicio && agora <= fim;
 }
+
 
 
 function diffMin(from: Date, to: Date) {
