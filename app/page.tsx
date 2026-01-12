@@ -44,27 +44,29 @@ function formatarDataBR(iso: string) {
   return `${d}/${m}/${y}`;
 }
 
-function toDateTime(data?: string, hora?: string) {
-  if (!data || !hora) return new Date(0);
-
-  const [y, m, d] = data.split("-").map(Number);
-  const [hh, mm] = hora.split(":").map(Number);
-
-  if (!y || !m || !d) return new Date(0);
-
-  return new Date(y, m - 1, d, hh || 0, mm || 0);
+function toDateTime(data: string, hora: string) {
+  // data: "2026-01-12"  hora: "14:30"
+  return new Date(`${data}T${hora}:00-03:00`);
 }
+
 
 function addMinutes(date: Date, minutes: number) {
   return new Date(date.getTime() + minutes * 60_000);
+}
+function agoraBrasil() {
+  const agora = new Date();
+  return new Date(agora.toLocaleString("en-US", { timeZone: "America/Sao_Paulo" }));
 }
 
 function isAoVivo(j: Jogo) {
   const inicio = toDateTime(j.data, j.hora);
   const fim = addMinutes(inicio, DURACAO_PADRAO_MIN);
-  const agora = new Date();
+  const agora = agoraBrasil();
+
   return agora >= inicio && agora <= fim;
 }
+
+
 function diffMin(from: Date, to: Date) {
   return Math.max(0, Math.round((to.getTime() - from.getTime()) / 60_000));
 }
