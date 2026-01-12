@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 type Jogo = {
   id: string;
   competicao: string;
@@ -142,10 +145,14 @@ function parseCSV(csv: string): Jogo[] {
 }
 
 async function getJogos(): Promise<Jogo[]> {
-  const res = await fetch(CSV_URL, { cache: "no-store" });
+  const res = await fetch(CSV_URL, {
+    cache: "no-store",
+    next: { revalidate: 0 },
+  });
   const texto = await res.text();
   return parseCSV(texto);
 }
+
 
 function Card({ j }: { j: Jogo }) {
   const aoVivo = isAoVivo(j);
